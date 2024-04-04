@@ -1,0 +1,25 @@
+.Board{
+    width: 300px;
+    height: 500px;
+    border-color: rgba(112, 112, 112, 0.397);
+    border-style: solid;
+    border-radius: 10px;
+}
+.title{
+    
+    font-size: 1em;
+}
+.titleInput{
+    outline: none;
+    border: none;
+    font-size: 1em;
+}
+.titleInput:active{
+    border: none;
+}
+.titleContainer{
+    width: 100%;
+    margin-left: 20px;
+    margin-top: 5px;
+
+}

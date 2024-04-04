@@ -1,0 +1,21 @@
+button{
+    border: 3px solid palevioletred;
+    background-color: transparent;
+    font-weight: 600;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+
+    border-radius: 9999px;
+    color: palevioletred;
+    transition: all 0.4s;
+    transform: initial;
+    flex-basis: auto;
+
+}
+button:hover{
+    font-weight: bold;
+    background-color: rgba(216, 112, 147, 0.848);
+    color: white;
+}
+
