@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import "./App.css";
+import AppStyle from "./App.module.css";
 import Card from "./components/Card/Card";
 import { closestCorners, DndContext } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
@@ -56,7 +56,7 @@ function App() {
          
           </DndContext>
         </div>
-        <button
+        <button className={AppStyle.button}
           onClick={(event) => {
             setColumn([...columns, columns.length + 1]);
           }}

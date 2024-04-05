@@ -7,10 +7,11 @@
     background-color: white;
 }
 .title{
-    
+   
     font-size: 1em;
 }
 .titleInput{
+    
     outline: none;
     border: none;
     font-size: 1em;
@@ -19,8 +20,29 @@
     border: none;
 }
 .titleContainer{
+    
     width: 100%;
-    margin-left: 20px;
-    margin-top: 5px;
+   padding-left: 5px;
+   padding-right: 5px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+.items{
+    display: flex;
+    gap: 6px;
+   
+}
+.item
+{
+   cursor: pointer;
+    outline: none;
+    border: none;
+    background-color: transparent;
+  
+}
+.item svg{
 
+    width: 20px;
+    height: 20px;
 }

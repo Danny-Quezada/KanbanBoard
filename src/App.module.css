@@ -1,4 +1,4 @@
-button{
+.button{
     border: 3px solid palevioletred;
     background-color: transparent;
     font-weight: 600;
@@ -13,7 +13,7 @@ button{
     flex-basis: auto;
 
 }
-button:hover{
+.button:hover{
     font-weight: bold;
     background-color: rgba(216, 112, 147, 0.848);
     color: white;
