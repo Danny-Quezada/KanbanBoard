@@ -2,7 +2,8 @@ import { useState } from "react";
 
 import "./App.css";
 import Card from "./components/Card/Card";
-
+import { closestCorners, DndContext } from "@dnd-kit/core";
+import { SortableContext } from "@dnd-kit/sortable";
 function App() {
   const [count, setCount] = useState(0);
   const [columns, setColumn] = useState([1, 2, 3]);
@@ -46,13 +47,22 @@ function App() {
             gap: "20px",
           }}
         >
-          {columns.map((value) => (
-           <Card key={value}/>
-          ))}
+          <DndContext collisionDetection={closestCorners}>
+            <SortableContext items={columns}>
+              {columns.map((value) => (
+                <Card key={value} id={value} />
+              ))}
+            </SortableContext>
+         
+          </DndContext>
         </div>
-        <button onClick={(event)=>{
-          setColumn([...columns, columns.length+1])
-        }}>Create columns</button>
+        <button
+          onClick={(event) => {
+            setColumn([...columns, columns.length + 1]);
+          }}
+        >
+          Create columns
+        </button>
       </section>
     </main>
   );
