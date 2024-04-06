@@ -5,9 +5,18 @@ import { useSortable } from "@dnd-kit/sortable";
 import { RiDragMove2Fill } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
 import { IoAddCircleOutline } from "react-icons/io5";
-function Card({ tasks, id }) {
-  const [title, setTitle] = useState("");
-  const [modeEditor, setMode] = useState("false");
+import Board from "../../Domain/Models/Board";
+
+interface Props{
+  column: Board
+  updateColumn: (id: string, title:string)=>void;
+}
+
+
+function Card({column, updateColumn}:Props) {
+  console.log(column.Title)
+  const [modeEditor, setMode] = useState<boolean>(true);
+  
   const {
     attributes,
     setNodeRef,
@@ -16,25 +25,25 @@ function Card({ tasks, id }) {
     transition,
     isDragging,
   } = useSortable({
-    id: id,
+    id: column.Id,
     data: {
       type: "container",
     },
   });
-  console.log(isDragging);
+ 
   return (
     <div
       className={CardStyle.Board}
       {...attributes}
       ref={setNodeRef}
       style={{
-        opacity: isDragging === true && "50%",
+       
         transition: transition,
         transform: CSS.Translate.toString(transform),
       }}
     >
       <div className={CardStyle.titleContainer}>
-        {modeEditor ? (
+        {modeEditor===true ? (
           <input
             placeholder="Write title"
             maxLength={10}
@@ -45,10 +54,8 @@ function Card({ tasks, id }) {
                 setMode(false);
               }
             }}
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
+            value={column.Title}
+            onChange={(e) => updateColumn(column.Id, e.target.value)} 
           />
         ) : (
           <h4
@@ -57,7 +64,7 @@ function Card({ tasks, id }) {
               setMode(true);
             }}
           >
-            {title}
+            {column.Title}
           </h4>
         )}
         <div className={CardStyle.items}>

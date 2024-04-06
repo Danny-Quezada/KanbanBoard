@@ -1,13 +1,14 @@
-import { useState } from "react";
-
+import { useMemo, useState } from "react";
 import AppStyle from "./App.module.css";
 import Card from "./components/Card/Card";
 import { closestCorners, DndContext } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
+import Board from "./Domain/Models/Board";
+import React from "react";
 function App() {
-  const [count, setCount] = useState(0);
-  const [columns, setColumn] = useState([1,]);
-
+  
+  const [columns, setColumn] = useState<Board[]>([]);
+const boardsId=useMemo(()=>columns.map((col)=>col.Id),[columns]);
   return (
     <main
       style={{
@@ -48,9 +49,9 @@ function App() {
           }}
         >
           <DndContext collisionDetection={closestCorners}>
-            <SortableContext items={columns}>
+            <SortableContext items={boardsId}>
               {columns.map((value) => (
-                <Card key={value} id={value} />
+                <Card key={value.Id} column={value} updateColumn={UpdateColumn} />
               ))}
             </SortableContext>
          
@@ -58,14 +59,30 @@ function App() {
         </div>
         <button className={AppStyle.button}
           onClick={(event) => {
-            setColumn([...columns, columns.length + 1]);
+            const board: Board={
+              Id: Math.floor(Math.random()*10001).toString(),
+              Tasks:[],
+              Title: ""
+            }
+            setColumn([...columns,board]);
           }}
         >
           Create columns
         </button>
       </section>
     </main>
+    
   );
+  function UpdateColumn(id: string, title: string){
+ 
+    const newColumns=columns.map((col)=>{
+      if(col.Id!==id) return col;
+      return {...col, Title: title};
+    })
+    
+    setColumn(newColumns);
+  }
+  
 }
 
 export default App;
