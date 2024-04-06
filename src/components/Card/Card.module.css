@@ -9,6 +9,10 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    
+}
+ .Board:hover{
+border-color: rgba(216, 112, 147, 0.738);
 }
 .title{
    

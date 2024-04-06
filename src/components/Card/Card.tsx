@@ -6,19 +6,18 @@ import { RiDragMove2Fill } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
 import { IoAddCircleOutline } from "react-icons/io5";
 import Board from "../../Domain/Models/Board";
+import TaskCard from "../Task/TaskCard";
 
-interface Props{
-  column: Board
-  updateColumn: (id: string, title:string)=>void;
-  addTask:(id:string)=>void;
-  deleteTask: (id: string)=>void;
+interface Props {
+  column: Board;
+  updateColumn: (id: string, title: string) => void;
+  addTask: (id: string) => void;
+  deleteTask: (id: string) => void;
 }
 
-
-function Card({column, updateColumn,addTask,deleteTask}:Props) {
-  
+function Card({ column, updateColumn, addTask, deleteTask }: Props) {
   const [modeEditor, setMode] = useState<boolean>(true);
-  
+
   const {
     attributes,
     setNodeRef,
@@ -32,20 +31,19 @@ function Card({column, updateColumn,addTask,deleteTask}:Props) {
       type: "container",
     },
   });
- 
+
   return (
     <div
       className={CardStyle.Board}
       {...attributes}
       ref={setNodeRef}
       style={{
-       
         transition: transition,
         transform: CSS.Translate.toString(transform),
       }}
     >
       <div className={CardStyle.titleContainer}>
-        {modeEditor===true ? (
+        {modeEditor === true || column.Title==="" ? (
           <input
             placeholder="Write title"
             maxLength={10}
@@ -57,7 +55,7 @@ function Card({column, updateColumn,addTask,deleteTask}:Props) {
               }
             }}
             value={column.Title}
-            onChange={(e) => updateColumn(column.Id, e.target.value)} 
+            onChange={(e) => updateColumn(column.Id, e.target.value)}
           />
         ) : (
           <h4
@@ -70,7 +68,10 @@ function Card({column, updateColumn,addTask,deleteTask}:Props) {
           </h4>
         )}
         <div className={CardStyle.items}>
-          <button className={CardStyle.item} onClick={(e)=>deleteTask(column.Id)}>
+          <button
+            className={CardStyle.item}
+            onClick={(e) => deleteTask(column.Id)}
+          >
             <MdDelete color="red" />
           </button>
           <button
@@ -84,18 +85,31 @@ function Card({column, updateColumn,addTask,deleteTask}:Props) {
           </button>
         </div>
       </div>
-      <div >
-        <SortableContext items={column.Tasks.map(task=>task.Id)}>
+      <div
+        style={{
+          flex: "1",
+          marginTop: "10px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          overflowY: "auto",
+          marginBottom: "10px",
+          paddingBottom: "5px"
+          
+        }}
+      >
+        <SortableContext items={column.Tasks.map((task) => task.Id)}>
           {column.Tasks.map((task) => (
-            <div style={{width: "100%", height: "50px", backgroundColor: "red"}}></div>
+            <TaskCard key={task.Id} task={task}/>
           ))}
         </SortableContext>
       </div>
 
-
-
       <footer className={CardStyle.footer}>
-        <button className={CardStyle.addButton} onClick={(e)=>addTask(column.Id)}>
+        <button
+          className={CardStyle.addButton}
+          onClick={(e) => addTask(column.Id)}
+        >
           <IoAddCircleOutline />
           <h5>Add task</h5>
         </button>
