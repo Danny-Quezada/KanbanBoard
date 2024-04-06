@@ -6,7 +6,7 @@ import { closestCorners, DndContext } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 function App() {
   const [count, setCount] = useState(0);
-  const [columns, setColumn] = useState([1, 2, 3]);
+  const [columns, setColumn] = useState([1,]);
 
   return (
     <main

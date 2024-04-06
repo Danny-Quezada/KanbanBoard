@@ -5,13 +5,17 @@
     border-style: solid;
     border-radius: 10px;
     background-color: white;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .title{
    
     font-size: 1em;
 }
 .titleInput{
-    
+    background-color: transparent;
     outline: none;
     border: none;
     font-size: 1em;
@@ -20,11 +24,10 @@
     border: none;
 }
 .titleContainer{
-    
+    border-radius: 4px;
+    background-color: rgba(242, 242, 242, 0.758);
     width: 100%;
-   padding-left: 5px;
-   padding-right: 5px;
-    margin-top: 8px;
+ padding: 5px 4px 2px 4px;
     display: flex;
     justify-content: space-between;
 }
@@ -45,4 +48,19 @@
 
     width: 20px;
     height: 20px;
+}
+.addButton{
+    display: flex;
+    gap: 5px;
+    outline: none;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    color: rgb(150, 150, 150);
+}
+.addButton svg{
+   
+    width: 15px;
+    height: 15px;
 }
