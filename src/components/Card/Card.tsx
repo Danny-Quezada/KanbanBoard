@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CardStyle from "./Card.module.css";
 import { CSS } from "@dnd-kit/utilities";
-import { useSortable } from "@dnd-kit/sortable";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { RiDragMove2Fill } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -10,11 +10,13 @@ import Board from "../../Domain/Models/Board";
 interface Props{
   column: Board
   updateColumn: (id: string, title:string)=>void;
+  addTask:(id:string)=>void;
+  deleteTask: (id: string)=>void;
 }
 
 
-function Card({column, updateColumn}:Props) {
-  console.log(column.Title)
+function Card({column, updateColumn,addTask,deleteTask}:Props) {
+  
   const [modeEditor, setMode] = useState<boolean>(true);
   
   const {
@@ -68,7 +70,7 @@ function Card({column, updateColumn}:Props) {
           </h4>
         )}
         <div className={CardStyle.items}>
-          <button className={CardStyle.item}>
+          <button className={CardStyle.item} onClick={(e)=>deleteTask(column.Id)}>
             <MdDelete color="red" />
           </button>
           <button
@@ -82,8 +84,18 @@ function Card({column, updateColumn}:Props) {
           </button>
         </div>
       </div>
+      <div >
+        <SortableContext items={column.Tasks.map(task=>task.Id)}>
+          {column.Tasks.map((task) => (
+            <div style={{width: "100%", height: "50px", backgroundColor: "red"}}></div>
+          ))}
+        </SortableContext>
+      </div>
+
+
+
       <footer className={CardStyle.footer}>
-        <button className={CardStyle.addButton}>
+        <button className={CardStyle.addButton} onClick={(e)=>addTask(column.Id)}>
           <IoAddCircleOutline />
           <h5>Add task</h5>
         </button>
