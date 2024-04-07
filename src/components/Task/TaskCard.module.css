@@ -1,0 +1,16 @@
+.taskCard {
+  width: 100%;
+  background-color: #eeeeee;
+  height: 100px;
+  border-radius: 12px;
+  padding: 10px;
+  cursor: grabbing;
+}
+.taskCard:hover {
+  border: 2px solid rgba(187, 109, 135, 0.608);
+}
+.titleInput {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
