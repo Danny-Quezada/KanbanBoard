@@ -14,12 +14,13 @@ interface Props {
   addTask: (id: string) => void;
   deleteColumn: (id: string) => void;
   updateTask:(idColumn: string, id:string, description: string)=>void;
+  deleteTask:(idColumn: string, id:string)=>void;
 }
 
-function Card({ board, updateColumn, addTask, deleteColumn ,updateTask}: Props) {
+function Card({ board, updateColumn, addTask, deleteColumn ,updateTask,deleteTask}: Props) {
   
-  const [modeEditor, setMode] = useState<boolean>(true);
-  console.log(board.Tasks)
+  const [modeEditor, setMode] = useState<boolean>(board.Title==="" ? true : false);
+
 
   const {
     attributes,
@@ -108,7 +109,7 @@ function Card({ board, updateColumn, addTask, deleteColumn ,updateTask}: Props) 
           >
             <SortableContext items={board.Tasks.map((task) => task.Id)}>
               {board.Tasks.map((task) => (
-                <TaskCard key={task.Id} task={task} updateTask={updateTask} />
+                <TaskCard deleteTask={deleteTask} key={task.Id} task={task} updateTask={updateTask} />
               ))}
             </SortableContext>
           </div>
@@ -119,7 +120,7 @@ function Card({ board, updateColumn, addTask, deleteColumn ,updateTask}: Props) 
               onClick={(e) => addTask(board.Id)}
             >
               <IoAddCircleOutline />
-              <h5>Add task</h5>
+              <h4>Add task</h4>
             </button>
           </footer>
         </>

@@ -82,6 +82,7 @@ function App() {
             <SortableContext items={boardsId}>
               {Boards.map((value) => (
                 <Card
+                deleteTask={deleteTask}
                   updateTask={updateTask}
                   key={value.Id}
                   board={value}
@@ -95,6 +96,7 @@ function App() {
               <DragOverlay>
                 {activeBoard && (
                   <Card
+                  deleteTask={deleteTask}
                     updateTask={updateTask}
                     addTask={AddTask}
                     board={activeBoard}
@@ -103,7 +105,7 @@ function App() {
                   />
                 )}
                 {activeTask && (
-                  <TaskCard task={activeTask} updateTask={updateTask} />
+                  <TaskCard deleteTask={deleteTask} task={activeTask} updateTask={updateTask} />
                 )}
               </DragOverlay>,
               document.body
@@ -136,6 +138,17 @@ function App() {
       setActiveTask(event.active.data.current.task);
       return;
     }
+  }
+  function deleteTask(idColumn: string, id: string){
+    const index=Boards.findIndex((value)=>value.Id===idColumn);
+    console.log(index);
+   const boards=Boards.map(board=>{
+    if(board.Id!==idColumn) return board;
+
+    const newTasks=board.Tasks.filter(value=>value.Id!==id);
+    return {...board, Tasks: newTasks}
+   })
+   setBoards(boards)
   }
   function deleteColumn(id: string) {
     const filteredColumns = Boards.filter((col) => col.Id !== id);
@@ -191,7 +204,7 @@ function App() {
 
     setBoards((columns) => {
       const activeColumnIndex = columns.findIndex((col) => col.Id === activeId);
-      console.log(activeColumnIndex);
+      
       const overColumnIndex = columns.findIndex((col) => col.Id === overId);
 
       return arrayMove(columns, activeColumnIndex, overColumnIndex);
@@ -213,9 +226,9 @@ function App() {
     if (!isActiveATask) return;
 
     const isOverAContainer = over.data.current?.type === "container";
-    console.log(isOverAContainer);
+  
     if (isActiveATask && isOverAContainer) {
-      console.log("preuba");
+     
       const newTask = active.data.current?.task as Task;
 
       const IdContainer = over.id.toString();
@@ -254,7 +267,7 @@ function App() {
           return boards;
         });
       } else if (columnIdActive !== columnIdOver) {
-        console.log("si");
+        
         setBoards((boards) => {
           const index = boards.findIndex((value) => value.Id == columnIdActive);
           const indexOver = boards.findIndex(

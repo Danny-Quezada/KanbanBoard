@@ -5,12 +5,28 @@
   border-radius: 12px;
   padding: 10px;
   cursor: grabbing;
+  position: relative;
 }
 .taskCard:hover {
   border: 2px solid rgba(187, 109, 135, 0.608);
 }
 .titleInput {
+
   outline: none;
   border: none;
   background-color: transparent;
+}
+.delete{
+  background-color: none;
+  outline: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  cursor: pointer;
+}
+.delete svg{
+  color: red;
+  width: 20px;
+  height: 20px;
 }
