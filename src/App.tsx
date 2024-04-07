@@ -22,7 +22,10 @@ function App() {
   const [activeBoard, setActiveBoard] = useState<Board | null>(null);
 
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const [Boards, setBoards] = useState<Board[]>([]);
+  const [Boards, setBoards] = useState<Board[]>([
+    { Id: "88888", Tasks: [], Title: "To do" },
+    { Id: "88898", Tasks: [], Title: "Doing" },
+  ]);
   const boardsId = useMemo(() => Boards.map((col) => col.Id), [Boards]);
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -79,6 +82,7 @@ function App() {
             <SortableContext items={boardsId}>
               {Boards.map((value) => (
                 <Card
+                  updateTask={updateTask}
                   key={value.Id}
                   board={value}
                   updateColumn={UpdateColumn}
@@ -91,13 +95,16 @@ function App() {
               <DragOverlay>
                 {activeBoard && (
                   <Card
+                    updateTask={updateTask}
                     addTask={AddTask}
                     board={activeBoard}
                     deleteColumn={deleteColumn}
                     updateColumn={UpdateColumn}
                   />
                 )}
-                {activeTask && <TaskCard task={activeTask} />}
+                {activeTask && (
+                  <TaskCard task={activeTask} updateTask={updateTask} />
+                )}
               </DragOverlay>,
               document.body
             )}
@@ -134,7 +141,21 @@ function App() {
     const filteredColumns = Boards.filter((col) => col.Id !== id);
     setBoards(filteredColumns);
   }
+  function updateTask(idColumn: string, id: string, description: string) {
+    const newColumns = Boards.map((col) => {
+      if (col.Id !== idColumn) return col;
 
+      const NewTasks=col.Tasks.map((task) => {
+        if (task.Id !== id) return task;
+
+        return { ...task, Description: description };
+        
+      });
+     
+      return {...col, Tasks: NewTasks};
+    });
+    setBoards(newColumns);
+  }
   function AddTask(id: string) {
     const task: Task = {
       Id: Math.floor(Math.random() * 10001).toString(),
@@ -191,26 +212,28 @@ function App() {
 
     if (!isActiveATask) return;
 
-
     const isOverAContainer = over.data.current?.type === "container";
     console.log(isOverAContainer);
-    if(isActiveATask && isOverAContainer){
-      console.log("preuba")
-      const newTask=active.data.current?.task as Task;
-   
-      const IdContainer=over.id.toString();
-      
-     
-      setBoards((boards)=>{
+    if (isActiveATask && isOverAContainer) {
+      console.log("preuba");
+      const newTask = active.data.current?.task as Task;
 
+      const IdContainer = over.id.toString();
 
-        const containerOverIndex=boards.findIndex((value)=>value.Id===IdContainer);
-        const containerActiveIndex=boards.findIndex((value)=>value.Id==newTask.IdColumn);
-        newTask.IdColumn=IdContainer;
-        boards[containerActiveIndex].Tasks=boards[containerActiveIndex].Tasks.filter((value)=>value.Id!==newTask.Id)
+      setBoards((boards) => {
+        const containerOverIndex = boards.findIndex(
+          (value) => value.Id === IdContainer
+        );
+        const containerActiveIndex = boards.findIndex(
+          (value) => value.Id == newTask.IdColumn
+        );
+        newTask.IdColumn = IdContainer;
+        boards[containerActiveIndex].Tasks = boards[
+          containerActiveIndex
+        ].Tasks.filter((value) => value.Id !== newTask.Id);
         boards[containerOverIndex].Tasks.push(newTask);
         return boards;
-      })
+      });
     }
     // Im dropping a Task over another Task
     if (isActiveATask && isOverATask) {
@@ -230,8 +253,8 @@ function App() {
           boards[index].Tasks = tasks;
           return boards;
         });
-      }  else if (columnIdActive !== columnIdOver) {
-        console.log("si")
+      } else if (columnIdActive !== columnIdOver) {
+        console.log("si");
         setBoards((boards) => {
           const index = boards.findIndex((value) => value.Id == columnIdActive);
           const indexOver = boards.findIndex(
@@ -243,20 +266,22 @@ function App() {
           const overIndex = boards[indexOver].Tasks.findIndex(
             (value) => value.Id === overId
           );
-          const newTask=boards[index].Tasks[activeIndex];
-          newTask.IdColumn=columnIdOver;
-          boards[indexOver].Tasks.push(newTask);
-          boards[index].Tasks=boards[index].Tasks.filter((value)=>value.Id!==activeId)
-          boards[indexOver].Tasks = arrayMove(
-            boards[indexOver].Tasks,
-            activeIndex,
-            overIndex
+          const newTask = boards[index].Tasks[activeIndex];
+
+          newTask.IdColumn = columnIdOver;
+          // boards[indexOver].Tasks.push(newTask);
+          boards[indexOver].Tasks.splice(overIndex, 0, newTask);
+          boards[index].Tasks = boards[index].Tasks.filter(
+            (value) => value.Id !== activeId
           );
+          // boards[indexOver].Tasks = arrayMove(
+          //   boards[indexOver].Tasks,
+          //   activeIndex,
+          //   overIndex-1
+          // );
           return boards;
         });
       }
-     
-
     }
   }
 }

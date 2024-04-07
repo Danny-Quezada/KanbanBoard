@@ -13,13 +13,13 @@ interface Props {
   updateColumn: (id: string, title: string) => void;
   addTask: (id: string) => void;
   deleteColumn: (id: string) => void;
+  updateTask:(idColumn: string, id:string, description: string)=>void;
 }
 
-function Card({ board, updateColumn, addTask, deleteColumn }: Props) {
+function Card({ board, updateColumn, addTask, deleteColumn ,updateTask}: Props) {
+  
   const [modeEditor, setMode] = useState<boolean>(true);
-  const tasksIds = useMemo(() => {
-    return board.Tasks.map((task) => task.Id);
-  }, [board.Tasks]);
+  console.log(board.Tasks)
 
   const {
     attributes,
@@ -106,9 +106,9 @@ function Card({ board, updateColumn, addTask, deleteColumn }: Props) {
               flexGrow: "1"
             }}
           >
-            <SortableContext items={tasksIds}>
+            <SortableContext items={board.Tasks.map((task) => task.Id)}>
               {board.Tasks.map((task) => (
-                <TaskCard key={task.Id} task={task} />
+                <TaskCard key={task.Id} task={task} updateTask={updateTask} />
               ))}
             </SortableContext>
           </div>

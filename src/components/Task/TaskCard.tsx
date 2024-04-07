@@ -4,7 +4,7 @@ import TaskCardStyle from "./TaskCard.module.css";
 import Task from "../../Domain/Models/Task";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-function TaskCard({ task }: Props) {
+function TaskCard({ task,updateTask }: Props) {
   const {
     attributes,
     setNodeRef,
@@ -51,8 +51,8 @@ function TaskCard({ task }: Props) {
                 }
               }}
               value={task.Description}
-              readOnly
-              // onChange={(e) => updateColumn(column.Id, e.target.value)}
+              
+               onChange={(e) => updateTask(task.IdColumn,task.Id, e.target.value)}
             />
           ) : (
             <h4
@@ -61,7 +61,7 @@ function TaskCard({ task }: Props) {
                 setMode(true);
               }}
             >
-              {task.Id}
+              {task.Description}
             </h4>
           )}
         </>
@@ -71,6 +71,7 @@ function TaskCard({ task }: Props) {
 }
 interface Props {
   task: Task;
+  updateTask: (idColumn: string, id:string, description:string)=>void;
 }
 
 export default TaskCard;
